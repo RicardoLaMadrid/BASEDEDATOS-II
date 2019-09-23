@@ -1,4 +1,4 @@
-#1
+#EJERCICIO 1
 SELECT us.fullname,us.ci,b.title
 FROM users as us
 inner join prestamos p on us.id_user = p.id_user
@@ -8,7 +8,7 @@ WHERE c.type = 'manga' or c.type = 'comedia';
 
 
 
-#2
+#EJERCICIO 2
 create function BUSCALIB(libro TEXT, paginas integer)returns integer
 begin
   declare cuenta integer default 0;
@@ -18,13 +18,12 @@ begin
   return cuenta;
 end;
 
-
-
 select BUSCALIB('ibrani',90);
 
 
 
-#3
+
+#EJERCICIO 3
 create function verificapag(paginas integer)returns TEXT
 begin
   declare verifica TEXT DEFAULT '';
@@ -49,7 +48,7 @@ where c.type='MANGA';
 
 
 
-#4
+#EJERCICIO 4
 create function acciones (action text,idautor integer, nameautor text,nacionalidadautor text)returns text
   begin
     if action = 'delete'
@@ -69,7 +68,9 @@ create function acciones (action text,idautor integer, nameautor text,nacionalid
 
 select acciones();
 
-#5
+
+
+#EJERCICIO 5
 create function BUSCALIBb()returns integer
 begin
   declare cuenta integer default 0;

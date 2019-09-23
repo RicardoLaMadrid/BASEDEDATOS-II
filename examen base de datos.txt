@@ -1,0 +1,84 @@
+#1
+SELECT us.fullname,us.ci,b.title
+FROM users as us
+inner join prestamos p on us.id_user = p.id_user
+inner join book b on p.id_book = b.id_book
+inner join category c on b.id_book = c.id_book
+WHERE c.type = 'manga' or c.type = 'comedia';
+
+
+
+#2
+create function BUSCALIB(libro TEXT, paginas integer)returns integer
+begin
+  declare cuenta integer default 0;
+  select count(bo.id_book)into cuenta
+  from book as bo
+  where bo.editorial = libro and bo.pages > paginas;
+  return cuenta;
+end;
+
+
+
+select BUSCALIB('ibrani',90);
+
+
+
+#3
+create function verificapag(paginas integer)returns TEXT
+begin
+  declare verifica TEXT DEFAULT '';
+
+  if paginas % 2 = 0
+    then
+    set verifica = concat('PAR:',paginas);
+    else
+    set verifica = concat('IMPAR:',paginas);
+  end if;
+return verifica;
+end;
+
+drop function verificapag;
+
+select concat('EDITORIAL:',bo.editorial,',','CATEGORIA:',c.type)as DESCRIPTION,
+       verificapag( bo.pages)AS PAGES
+from book as bo
+inner join category c on bo.id_book = c.id_book
+where c.type='MANGA';
+
+
+
+
+#4
+create function acciones (action text,idautor integer, nameautor text,nacionalidadautor text)returns text
+  begin
+    if action = 'delete'
+      then
+      delete from autor where id_autor = idautor ;
+    end if;
+     if action = 'update'
+      then
+      update autor set name = nameautor, nacionality = nacionalidadautor where id_autor = idautor;
+    end if;
+     if action = 'insert'
+      then
+      insert into autor ( name, nacionality)values (nameautor,nacionality);
+    end if;
+    return concat(action,'action','realizado exitosamente');
+  end;
+
+select acciones();
+
+#5
+create function BUSCALIBb()returns integer
+begin
+  declare cuenta integer default 0;
+  select count(bo.id_book)into cuenta
+  from book as bo
+  inner join prestamos p on bo.id_book = p.id_book
+  where year(p.fec_prestamo)=2018;
+  return cuenta;
+end;
+
+
+select BUSCALIBb()as Cantidad_2018;
